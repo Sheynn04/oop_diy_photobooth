@@ -49,10 +49,10 @@ class LayOut(Capture):
                 break
             cv2.imshow("Photobooth", frame)
             key = cv2.waitKey(1)
-            if key % 256 == 27:  # ESC
+            if key % 256 == 27: 
                 print("Escape pressed.")
                 return False
-            elif key % 256 == 32:  # SPACE
+            elif key % 256 == 32: 
                 self.photos.append(frame)
                 print(f"Photo {self.count + 1} taken")
                 self.count += 1
