@@ -91,3 +91,19 @@ class LayOut(Capture):
 class PhotoSaving:
     def __init__(self, final_img):
         self.final_img = final_img
+
+    def ask_save(self):
+        cv2.imshow("Our Memories!", self.final_img)
+        print("Do you want to save (s) or discard (d)?")
+        while True:
+            key = cv2.waitKey(1)
+            if key % 256 == 27:
+                print("Exited.")
+                break
+            elif key % 256 == ord('s'):
+                cv2.imwrite("Memories.png", self.final_img)
+                print("Saved!")
+                break
+            elif key % 256 == ord('d'):
+                print("Photo discarded.")
+                break
