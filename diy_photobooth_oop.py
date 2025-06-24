@@ -109,3 +109,16 @@ class PhotoSaving:
                 break
 
 # 5. Create a separate class for the main app.
+
+class PhotoBoothSystem:
+    def __init__(self):
+        self.layout = LayOut(cv2.VideoCapture(0))
+
+    def start(self):
+        while True:
+            success = self.layout.take_photos()
+            if not success or len(self.layout.photos) < 4:
+                break
+
+photobooth = PhotoBoothSystem()
+photobooth.start()
