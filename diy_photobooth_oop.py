@@ -41,5 +41,21 @@ class LayOut(Capture):
             print("Font not found. Using default.")
             return ImageFont.load_default()
 
+    def take_photos(self):
+        cv2.namedWindow("Photobooth")
+        while self.count < 4:
+            ret, frame = self.read_frame()
+            if not ret:
+                break
+            cv2.imshow("Photobooth", frame)
+            key = cv2.waitKey(1)
+            if key % 256 == 27:  # ESC
+                print("Escape pressed.")
+                return False
+            elif key % 256 == 32:  # SPACE
+                self.photos.append(frame)
+                print(f"Photo {self.count + 1} taken")
+                self.count += 1
+        return True
 
 # 4. Create a class for saving the photos.
