@@ -58,4 +58,32 @@ class LayOut(Capture):
                 self.count += 1
         return True
 
+    def create_collage(self):
+        target_width = 100
+        resized_photos = [cv2.resize(photo, (target_width, int(photo.shape[0] * target_width / photo.shape[1])))
+                        for photo in self.photos]
+        
+        collage = np.vstack(resized_photos)
+
+        h, w = collage.shape[:2]
+        bg = np.full((h + 2*self.border, w + 2*self.border, 3), self.background_color, dtype=np.uint8)
+        bg[self.border:self.border+h, self.border:self.border+w] = collage
+        cv2.rectangle(bg, (self.border, self.border), (bg.shape[1]-self.border, bg.shape[0]-self.border), (0, 0, 0), 5)
+        return bg
+    
+    def add_text(self, image):
+        pil_img = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        draw = ImageDraw.Draw(pil_img)
+
+        bbox = draw.textbbox((0, 0), self.frame_text, font=self.font)
+        text_width = bbox[2] - bbox[0]
+        pos = ((pil_img.width - text_width) // 2, self.border // 2)
+        offset = 2
+
+        for dx in [-offset, offset]:
+            for dy in [-offset, offset]:
+                draw.text((pos[0] + dx, pos[1] + dy), self.frame_text, font=self.font, fill=(0, 0, 0))
+
+        draw.text(pos, self.frame_text, font=self.font, fill=(255, 255, 0))
+        return cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
 # 4. Create a class for saving the photos.
