@@ -107,3 +107,5 @@ class PhotoSaving:
             elif key % 256 == ord('d'):
                 print("Photo discarded.")
                 break
+
+# 5. Create a separate class for the main app.
