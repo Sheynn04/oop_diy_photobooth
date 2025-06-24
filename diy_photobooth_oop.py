@@ -65,9 +65,9 @@ class LayOut(Capture):
         
         collage = np.vstack(resized_photos)
 
-        h, w = collage.shape[:2]
-        bg = np.full((h + 2*self.border, w + 2*self.border, 3), self.background_color, dtype=np.uint8)
-        bg[self.border:self.border+h, self.border:self.border+w] = collage
+        height, width = collage.shape[:2]
+        bg = np.full((height + 2 * self.border, width + 2 * self.border, 3), self.background_color, dtype=np.uint8)
+        bg[self.border: self.border + height, self.border: self.border + width] = collage
         cv2.rectangle(bg, (self.border, self.border), (bg.shape[1]-self.border, bg.shape[0]-self.border), (0, 0, 0), 5)
         return bg
     
@@ -77,14 +77,17 @@ class LayOut(Capture):
 
         bbox = draw.textbbox((0, 0), self.frame_text, font=self.font)
         text_width = bbox[2] - bbox[0]
-        pos = ((pil_img.width - text_width) // 2, self.border // 2)
+        pos = ((pil_img.width - text_width) // 2, 0)
         offset = 2
 
-        for dx in [-offset, offset]:
-            for dy in [-offset, offset]:
-                draw.text((pos[0] + dx, pos[1] + dy), self.frame_text, font=self.font, fill=(0, 0, 0))
+        outline_color = (128, 0, 128)
+        text_color = (255, 255, 255)     
+        for dx in [-offset, 0, offset]:
+            for dy in [-offset, 0, offset]:
+                if dx != 0 or dy != 0:  
+                    draw.text((pos[0] + dx, pos[1] + dy), self.frame_text, font=self.font, fill=outline_color)
 
-        draw.text(pos, self.frame_text, font=self.font, fill=(255, 255, 0))
+        draw.text(pos, self.frame_text, font=self.font, fill=text_color)
         return cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
     
 # 4. Create a class for saving the photos.
