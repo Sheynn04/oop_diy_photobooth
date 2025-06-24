@@ -86,4 +86,8 @@ class LayOut(Capture):
 
         draw.text(pos, self.frame_text, font=self.font, fill=(255, 255, 0))
         return cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+    
 # 4. Create a class for saving the photos.
+class PhotoSaving:
+    def __init__(self, final_img):
+        self.final_img = final_img
