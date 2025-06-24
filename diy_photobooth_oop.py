@@ -59,7 +59,7 @@ class LayOut(Capture):
         return True
 
     def create_collage(self):
-        target_width = 100
+        target_width = 200
         resized_photos = [cv2.resize(photo, (target_width, int(photo.shape[0] * target_width / photo.shape[1])))
                         for photo in self.photos]
         
@@ -132,10 +132,30 @@ class PhotoBoothSystem:
             self.layout.count = 0
             self.layout.photos.clear()
 
-        self.layout.release_camera()
+        self.layout.release()
         print("Thanks for using the photobooth!")
 
-photobooth = PhotoBoothSystem()
-photobooth.start()
-
 # 6. Make use of that tkinter library.
+def run_gui():
+    root = tk.Tk()
+    root.title("OOP DIY Photobooth")
+    root.geometry("400x300")
+    root.configure(bg="#fff0f5")
+
+    label = tk.Label(root, text="📸 Welcome to the DIY Photobooth!", font=("Arial", 14), bg="#fff0f5")
+    label.pack(pady=30)
+
+    def start_photobooth():
+        root.withdraw()
+        app = PhotoBoothSystem()
+        app.start()
+        root.deiconify()
+
+    btn = tk.Button(root, text="Start Photobooth", command=start_photobooth, font=("Arial", 13), bg="#ffb6c1", width=20)
+    btn.pack(pady=20)
+
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    run_gui()
