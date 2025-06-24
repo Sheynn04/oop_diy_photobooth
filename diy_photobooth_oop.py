@@ -120,5 +120,22 @@ class PhotoBoothSystem:
             if not success or len(self.layout.photos) < 4:
                 break
 
+            collage = self.layout.create_collage()
+            collage_with_text = self.layout.add_text(collage)
+
+            saver = PhotoSaving(collage_with_text)
+            saver.ask_save()
+
+            again = messagebox.askyesno("Try Again?", "Do you want to take more photos?")
+            if not again:
+                break
+            self.layout.count = 0
+            self.layout.photos.clear()
+
+        self.layout.release_camera()
+        print("Thanks for using the photobooth!")
+
 photobooth = PhotoBoothSystem()
 photobooth.start()
+
+# 6. Make use of that tkinter library.
